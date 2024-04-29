@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: skyblue; /* Use skyblue color as the background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #imageInput {
+            margin-bottom: 10px;
+        }
+
+        #predictionResult {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue button color */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Digit Classifier</h1>
+        <input type="file" id="imageInput" accept="image/*">
+        <br>
+        <button onclick="uploadImage()">Classify</button>
+        <p id="predictionResult"></p>
+    </div>
+
+    <script type="text/javascript">
+        async function uploadImage() {
+            const input = document.getElementById("imageInput");
+            
+            // Check if a file is selected
+            if (!input.files[0]) {
+                alert("Please select a file to upload");
+                return;
+            }
+
+            // Create FormData object and append the selected file
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                // Send POST request to backend endpoint
+                const response = await fetch("http://127.0.0.1:8000/predict-image/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                // Parse response JSON and display prediction result
+                const result = await response.json();
+                document.getElementById("predictionResult").textContent = `Prediction: ${result.prediction}`;
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to classify image!");
+            }
+        }
+    </script>
+</body>
+</html>
