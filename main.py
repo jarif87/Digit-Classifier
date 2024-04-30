@@ -5,21 +5,16 @@ from PIL import Image, ImageOps
 from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.middleware.cors import CORSMiddleware
 import PIL
-# Load the pre-trained machine learning model
-with open("rf_model_part_5.pkl", "rb") as f:
-    model = pickle.load(f)
 
 # Initialize FastAPI app
 app = FastAPI()
 
-# Configure CORS settings
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Define the model variable
+model = None
+
+# Load the pre-trained machine learning model
+with open("rf_model_part_5.pkl", "wb") as f:
+    pickle.dump(model, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 # Define endpoint for serving index.html
 @app.get("/")
