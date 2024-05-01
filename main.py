@@ -6,7 +6,7 @@ from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.middleware.cors import CORSMiddleware
 import PIL
 # Load the pre-trained machine learning model
-with open("rf_model_part_11.pkl", "rb") as f:
+with open("rf_model_part_5.pkl", "rb") as f:
     model = pickle.load(f)
 
 # Initialize FastAPI app
