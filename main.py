@@ -5,9 +5,6 @@ from PIL import Image, ImageOps
 from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.middleware.cors import CORSMiddleware
 import PIL
-# Load the pre-trained machine learning model
-with open("rf_model_part_5.pkl", "rb") as f:
-    model = pickle.load(f)
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -21,6 +18,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load the pre-trained machine learning model
+try:
+    with open("rf_model_part_5.pkl", "rb") as f:
+        model = pickle.load(f)
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
+
 # Define endpoint for serving index.html
 @app.get("/")
 async def read_index():
@@ -31,6 +36,9 @@ async def read_index():
 # Define endpoint for image prediction
 @app.post("/predict-image/")
 async def predict_image(file: UploadFile = File(...)):
+    if model is None:
+        return {"error": "Model not loaded"}
+    
     # Read file contents
     contents = await file.read()
     
