@@ -27,7 +27,7 @@ async def read_index():
 
 # Load the pre-trained machine learning model with error handling
 try:
-    with open("rf_model_part_11.pkl", "rb") as f:
+    with open("rf_model_part_5.pkl", "rb") as f:
         model = pickle.load(f)
 except Exception as e:
     print(f"Error loading model: {e}")
